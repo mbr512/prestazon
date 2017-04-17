@@ -16,13 +16,30 @@ import javax.servlet.http.HttpServletRequest;
 @Local
 public interface ServiceCommercialLocal {
     
-    //création de client
-    public Client creerClient(HttpServletRequest request);
+   //création de client
+   public Client creerClient(HttpServletRequest request);
     
-    //vérife si le login choisi à l'inscrption existe déjà
-    public boolean verificationLogin (String Login);
+   //vérife si le login choisi à l'inscrption existe déjà
+   public boolean verificationLogin (String Login);
     
-    public String getData (HttpServletRequest request);
-    
-   public void addError (String champ, String message);
+   
+        //méthodes utilitaires 
+        public String getData (HttpServletRequest request, String champ);
+
+        public void addError (String champ, String message);
+
+        public void validationNomPrenomAdr (String nom) throws Exception;
+
+        public void validationLogin (String login) throws Exception;
+
+        public void validationTel (String tel) throws Exception;
+
+        public void validationMdp (String mdp, String confirmation) throws Exception;
+
+        public void validationMail (String mail) throws Exception;
+
+
+   
+
+   
 }

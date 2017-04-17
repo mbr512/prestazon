@@ -32,13 +32,54 @@ public class ServiceCommercial implements ServiceCommercialLocal {
     private static final String CHAMP_PASS = "motdepasse";
     private static final String CHAMP_CONF = "confirmation";
         
-   private String resultat;
-   private Map<String, String> erreurs = new HashMap<String,String>();
+    private String resultat;
+    private Map<String, String> erreurs = new HashMap<String,String>();
 
+     
+    @Override
+    public Client creerClient(HttpServletRequest request) {
+         
+         //récupération des données saisies
+         String nom = getData(request, CHAMP_NOM);
+         String prenom = getData(request, CHAMP_PRENOM);
+         String login = getData(request, CHAMP_LOGIN);
+         String tel = getData(request, CHAMP_TEL);
+         String mail = getData(request, CHAMP_EMAIL);
+         String adr = getData(request, CHAMP_ADR);
+         String mdp = getData(request, CHAMP_PASS);
+         
+         //création d'un nouveau client
+         Client newClient = new Client();
+         
+         //validation des informations saisies
+         
+         //validation du nom 
+         try{
+              
+         }
+         catch(Exception e){
+             
+         }
+         
+         return null;
+    }
+
+    @Override
+    public String getData(HttpServletRequest request , String champ) {     
+        String valeur = request.getParameter( champ );
+            if ( valeur == null || valeur.trim().length() == 0 ) {
+                return null;
+            } 
+            else {
+                return valeur.trim();
+            }
+    }
     
-   
+    @Override
+    public void addError(String champ, String message) {
+           erreurs.put(champ, champ);
+    }
     
-   
     public String getResultat() {
         return resultat;
     }
@@ -52,19 +93,62 @@ public class ServiceCommercial implements ServiceCommercialLocal {
     }
 
     @Override
-    public Client creerClient(HttpServletRequest request) {
-        return null;
+    public void validationNomPrenomAdr(String nom) throws Exception {
+        if ( nom != null && nom.length() < 8 ) 
+        {
+            throw new Exception( "Le nom d'utilisateur doit contenir au moins 3 caractères." );
+        }
+    }   
+
+    @Override
+    //vérf
+    public void validationLogin(String nom) throws Exception {
+       if ( nom != null && nom.length() < 3 ) 
+        {
+            throw new Exception( "Le nom d'utilisateur doit contenir au moins 3 caractères." );
+        }     
     }
 
     @Override
-    public String getData(HttpServletRequest request) {
-       throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //vérifie si le téléphone saisi est bien un entier composé de 10 chiffres
+    public void validationTel(String tel) throws Exception {
+      if ( isNumeric(tel)== false && tel.length() < 11 ) 
+        {
+            throw new Exception( "Le format du téléphone n'est pas respecté" );
+        }
+        
     }
 
     @Override
-    public void addError(String champ, String message) {
-           erreurs.put(champ, champ);
+    //vérifie que le mot de passe et la confirmation sont renseigné
+    //vérifie que mdp et confirmation sont identique
+    //vérifie que la longueur du mot de passe est sup à 3
+    public void validationMdp(String mdp, String confirmation ) throws Exception {
+       // 
+       if ( mdp != null && confirmation != null ) {
+            if ( !mdp.equals( confirmation ) ) {
+                    throw new Exception( "Les mots de passe entrés sont différents, merci de les saisir à nouveau." );
+             } else if ( mdp.length() < 3 ) {
+                    throw new Exception( "Les mots de passe doivent contenir au moins 3 caractères." );
+                    }
+               } else {
+                    throw new Exception( "Merci de saisir et confirmer votre mot de passe." );
+                 }          
     }
 
+    @Override
+    public void validationMail(String nom) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
    
-}
+   public static boolean isNumeric(String str){  
+    try{  
+        double d = Double.parseDouble(str);  
+     }  
+    catch(NumberFormatException nfe){  
+        return false;  
+     }  
+    return true;  
+   }
+   
+}   

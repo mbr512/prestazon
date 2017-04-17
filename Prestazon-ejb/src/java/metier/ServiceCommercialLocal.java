@@ -5,7 +5,9 @@
  */
 package metier;
 
+import entities.Client;
 import javax.ejb.Local;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -14,9 +16,13 @@ import javax.ejb.Local;
 @Local
 public interface ServiceCommercialLocal {
     
-    public void creerClient(String login, String mdp, String nom, String prenom, String telephone, String mail, String adresse);
+    //création de client
+    public Client creerClient(HttpServletRequest request);
+    
     //vérife si le login choisi à l'inscrption existe déjà
     public boolean verificationLogin (String Login);
     
-
+    public String getData (HttpServletRequest request);
+    
+   public void addError (String champ, String message);
 }

@@ -135,10 +135,18 @@ public class ServiceCommercial implements ServiceCommercialLocal {
                     throw new Exception( "Merci de saisir et confirmer votre mot de passe." );
                  }          
     }
-
+    
     @Override
-    public void validationMail(String nom) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //vérifie que le mail a bien le format d'un adresse mail
+    public void validationMail(String email) throws Exception {
+      if ( email != null ) {
+            if ( !email.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
+                    throw new Exception( "Merci de saisir une adresse mail valide." );
+                     }
+      } 
+      else {
+            throw new Exception( "Merci de saisir une adresse mail." );
+        }
     }
    
    public static boolean isNumeric(String str){  

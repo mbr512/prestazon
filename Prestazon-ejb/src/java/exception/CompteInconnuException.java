@@ -10,5 +10,9 @@ package exception;
  * @author tebibou
  */
 public class CompteInconnuException extends Exception{
+
+    public CompteInconnuException() {
+        System.out.println("Vous ne disposez pas assez de fonds dans votre compte");
+    }
     
 }

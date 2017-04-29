@@ -14,16 +14,14 @@
 <p>Vous pouvez vous inscrire via ce formulaire.</p>
 
 
-<label for="email">Adresse email 
-    <span class="requis">*</span>
-</label>
-
+<!--Champ de saisie pour l'adresse email-->
+<label for="email">Adresse email <span 
+class="requis">*</span></label>
 <input type="email" id="email" name="email"
 value="<c:out value="${utilisateur.email}"/>" size="20"
 maxlength="60" />
 <span class="erreur">${form.erreurs['email']}</span>
 <br />
-
 
 <!---->
 <label for="motdepasse">Mot de passe <span

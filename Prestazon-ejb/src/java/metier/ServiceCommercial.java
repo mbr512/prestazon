@@ -53,13 +53,16 @@ public class ServiceCommercial implements ServiceCommercialLocal {
          
          //validation des informations saisies
          
-         //validation du nom 
+         //validation du nom
          try{
-              
+              validationNomPrenomAdr(nom);
          }
          catch(Exception e){
-             
+             addError(CHAMP_NOM, e.getMessage());
          }
+         newClient.setNom(nom);
+         //validation
+         
          
          return null;
     }

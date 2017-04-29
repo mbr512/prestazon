@@ -18,5 +18,6 @@ import javax.ejb.Local;
 public interface GestionStocksLocal {
     
     public List<Produit> verifierStock(HashMap<Long,Integer> listeProduitsQuantites);
+    public void incrementerStock(HashMap<Produit,Integer> listeProduitsQuantites);
     
 }

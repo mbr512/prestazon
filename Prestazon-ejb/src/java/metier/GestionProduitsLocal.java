@@ -6,6 +6,7 @@
 package metier;
 
 import entities.Produit;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,4 +17,7 @@ import javax.ejb.Local;
 @Local
 public interface GestionProduitsLocal {
     public List<Produit> afficherVitrine();
+    public List<Produit> afficherTousLesProduits();
+    public Produit find(long id);
+    public void ActiverVisibilite(HashMap<Long,Boolean> listeIdProduits);
 }

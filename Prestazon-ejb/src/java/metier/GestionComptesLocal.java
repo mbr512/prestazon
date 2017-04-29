@@ -7,6 +7,7 @@ package metier;
 
 import entities.Compte;
 import entities.Operation;
+import java.util.Vector;
 import javax.ejb.Local;
 
 /**
@@ -17,6 +18,7 @@ import javax.ejb.Local;
 public interface GestionComptesLocal {
     public Compte find(long NoCompte);
     public float positionCompte(long NoCompte);
-    public Operation debiter(long NoCompte, float montantCommande);
-    public Operation crediter(long NoCompte, float montantCredite);
+    public Operation debiter(long NoCompte, float montantCommande) throws Exception;
+    public Operation crediter(long NoCompte, float montantCredite) throws Exception;
+     public Vector<Operation> GetOperationFromCompte(long Id);
 }

@@ -7,6 +7,8 @@ package metier;
 
 import controllers.ProduitFacadeLocal;
 import entities.Produit;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -23,8 +25,43 @@ public class GestionProduits implements GestionProduitsLocal {
     
     @Override
      public List<Produit> afficherVitrine() {
-       return produitFacade.findAll();
+       ArrayList<Produit> listeProduitsAffiches  = new  ArrayList<Produit>();
+       List<Produit> listeTousLesProduits = afficherTousLesProduits();
+       int i;
+       Produit ProduitActuel;
+       for( i=0;i < listeTousLesProduits.size() -1;i++){
+           ProduitActuel = listeTousLesProduits.get(i);
+           if (ProduitActuel.isVisible()){
+               listeProduitsAffiches.add(ProduitActuel);
+           }
+      
+       }
+        return listeProduitsAffiches;
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+   
+     
+
+    @Override
+    public List<Produit> afficherTousLesProduits() {
+        return produitFacade.findAll();
+    }
+
+    @Override
+    public Produit find(long id) {
+        return produitFacade.find(id);
+    }
+
+    @Override
+    public void ActiverVisibilite(HashMap<Long, Boolean> listeIdProduits) {
+        List<Produit> listeTousLesProduits = afficherTousLesProduits();
+        Produit ProduitActuel;
+        int i;
+        for (i=0;i<listeTousLesProduits.size() - 1;i++){
+            ProduitActuel = listeTousLesProduits.get(i);
+            if (listeIdProduits.containsKey(ProduitActuel.getId())){
+                    ProduitActuel.setVisible(listeIdProduits.get(ProduitActuel.getId()));
+                    produitFacade.edit(ProduitActuel);
+            }
+        }
+    }
 }

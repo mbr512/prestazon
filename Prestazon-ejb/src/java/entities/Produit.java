@@ -13,7 +13,7 @@ import javax.persistence.Id;
 
 /**
  *
- * @author tebibou
+ * @author lemec
  */
 @Entity
 public class Produit implements Serializable {
@@ -22,16 +22,40 @@ public class Produit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+   
     private String libelle;
     private String designation;
     private double prixHT;
     private double taxe;
-    private long quantiteTheorique;
-    private long quantiteReelle;
+    private int quantiteTheorique;
+    private int quantiteReelle;
+    private boolean visible;
 
+    public int getQuantiteTheorique() {
+        return quantiteTheorique;
+    }
 
+    public void setQuantiteTheorique(int quantiteTheorique) {
+        this.quantiteTheorique = quantiteTheorique;
+    }
+
+    public int getQuantiteReelle() {
+        return quantiteReelle;
+    }
+
+    public void setQuantiteReelle(int quantiteReelle) {
+        this.quantiteReelle = quantiteReelle;
+    }
     
+    
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Override
     public int hashCode() {
@@ -53,64 +77,54 @@ public class Produit implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "entities.Produit[ id=" + id + " ]";
-    }
-    
-    public String getLibelle() {
-        return libelle;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
+    public String getLibelle() {
+        return libelle;
     }
 
     public String getDesignation() {
         return designation;
     }
 
-    public void setDesignation(String designation) {
-        this.designation = designation;
-    }
-
     public double getPrixHT() {
         return prixHT;
-    }
-
-    public void setPrixHT(double prixHT) {
-        this.prixHT = prixHT;
     }
 
     public double getTaxe() {
         return taxe;
     }
 
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public void setPrixHT(double prixHT) {
+        this.prixHT = prixHT;
+    }
+
     public void setTaxe(double taxe) {
         this.taxe = taxe;
     }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
     
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "entities.Produit[ id=" + id + " ]";
     }
     
-     public long getquantiteTheorique() {
-        return quantiteTheorique;
-    }
-
-    public void setquantiteTheorique(long quantiteTheorique) {
-        this.quantiteTheorique = quantiteTheorique;
-    }
-
-    public long getquantiteReelle() {
-        return quantiteReelle;
-    }
-
-    public void setquantiteReelle(long quantiteReelle) {
-        this.quantiteReelle = quantiteReelle;
-    }
 }

@@ -5,6 +5,7 @@
  */
 package metier;
 
+import exception.*;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +14,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface ServiceComptableLocal {
-    public void lancerFacturation(long IdCommande,long NoCompte);
+    public void lancerFacturation(long IdCommande,long NoCompte) throws  CompteInconnuException,SoldeInsuffisantException;
 }

@@ -52,6 +52,11 @@ public class GestionCommandes implements GestionCommandesLocal {
     public String getEtatCommande(long IdCommande) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public float getMontantTotal(Long IdCommande) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

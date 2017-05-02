@@ -18,6 +18,7 @@ import java.util.Vector;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import exception.*;
+import java.math.BigDecimal;
 
 /**
  *
@@ -46,10 +47,10 @@ public class GestionComptes implements GestionComptesLocal {
             for (int i=0; i<vct.size();i++){
                 opt = vct.get(i);
                 if (opt.getType()=="Crédit"){
-                    resultat+= opt.getSomme();
+                    resultat+= opt.getSomme().floatValue();
                 };
                 if (opt.getType()=="Débit"){
-                    resultat-= opt.getSomme();
+                    resultat-= opt.getSomme().floatValue();
                 };
             }
             return resultat;        
@@ -63,7 +64,7 @@ public class GestionComptes implements GestionComptesLocal {
           Operation opt;
           for (int i=0; i<taille;i++){
               opt=ListeOperation.get(i);
-              if (opt.getCompte().getId()==Id){
+              if (opt.getCompteid().getId()==Id){
                   resultat.add(opt);
           }}
               
@@ -79,9 +80,9 @@ public class GestionComptes implements GestionComptesLocal {
               throw new SoldeInsuffisantException();
             }
             Operation opt = new Operation();
-            opt.setCompte(cpt);
+            opt.setCompteid(cpt);
             opt.setDate(new Date());
-            opt.setSomme(opt.getSomme()-montantCommande);
+            opt.setSomme(BigDecimal.valueOf(opt.getSomme().doubleValue()-new Double(montantCommande)));
             opt.setType("Débit");
             operationFacade.create(opt);
         return  opt;
@@ -95,9 +96,9 @@ public class GestionComptes implements GestionComptesLocal {
               throw new Exception("Montant Crédité Négatif");
             }
             Operation opt = new Operation();
-            opt.setCompte(cpt);
+            opt.setCompteid(cpt);
             opt.setDate(new Date());
-            opt.setSomme(opt.getSomme()+montantCredite);
+            opt.setSomme(BigDecimal.valueOf(opt.getSomme().floatValue()+montantCredite));
             opt.setType("Crédit");
             operationFacade.create(opt);
             return opt;

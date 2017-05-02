@@ -29,7 +29,7 @@ public class GestionStocks implements GestionStocksLocal {
         int i;
         for (i=resultat.size()-1;i>=0;i--){
             if (listeProduitsQuantites.containsKey(resultat.get(i).getId())){
-                if (resultat.get(i).getQuantiteReelle()>=listeProduitsQuantites.get(resultat.get(i).getId()))
+                if (resultat.get(i).getQuantiteRelle()>=listeProduitsQuantites.get(resultat.get(i).getId()))
                     resultat.remove(i);
             }else{
                 resultat.remove(i);
@@ -50,7 +50,7 @@ public class GestionStocks implements GestionStocksLocal {
             if (listeProduitsQuantites.containsKey(ProduitActuel)){
                 qte=listeProduitsQuantites.get(ProduitActuel);
                 if (qte>0){
-                    ProduitActuel.setQuantiteReelle(ProduitActuel.getQuantiteReelle()+qte);
+                    ProduitActuel.setQuantiteRelle(ProduitActuel.getQuantiteRelle()+qte);
                     ProduitActuel.setQuantiteTheorique(ProduitActuel.getQuantiteTheorique()+qte);
                     produitFacade.edit(ProduitActuel);
                 }

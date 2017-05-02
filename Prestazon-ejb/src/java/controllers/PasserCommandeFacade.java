@@ -5,7 +5,7 @@
  */
 package controllers;
 
-import entities.PasserCommande;
+import entities.Passercommande;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author tebibou
  */
 @Stateless
-public class PasserCommandeFacade extends AbstractFacade<PasserCommande> implements PasserCommandeFacadeLocal {
+public class PasserCommandeFacade extends AbstractFacade<Passercommande> implements PasserCommandeFacadeLocal {
 
     @PersistenceContext(unitName = "Prestazon-ejbPU")
     private EntityManager em;
@@ -26,7 +26,7 @@ public class PasserCommandeFacade extends AbstractFacade<PasserCommande> impleme
     }
 
     public PasserCommandeFacade() {
-        super(PasserCommande.class);
+        super(Passercommande.class);
     }
     
 }

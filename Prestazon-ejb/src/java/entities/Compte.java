@@ -6,35 +6,91 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author tebibou
+ * @author lemec
  */
 @Entity
+@Table(name = "compte", catalog = "prestazon", schema = "")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Compte.findAll", query = "SELECT c FROM Compte c")
+    , @NamedQuery(name = "Compte.findById", query = "SELECT c FROM Compte c WHERE c.id = :id")
+    , @NamedQuery(name = "Compte.findBySolde", query = "SELECT c FROM Compte c WHERE c.solde = :solde")})
 public class Compte implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    
-    private Long id;
-    private float solde;
-   
-    @ManyToOne
-    private Client client;  
-    
-    @OneToMany
-    private List<Operation> operations;
-    
-    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "solde")
+    private BigDecimal solde;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compteid")
+    private Collection<Operation> operationCollection;
+    @JoinColumn(name = "Client_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Client clientid;
+
+    public Compte() {
+    }
+
+    public Compte(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public BigDecimal getSolde() {
+        return solde;
+    }
+
+    public void setSolde(BigDecimal solde) {
+        this.solde = solde;
+    }
+
+    @XmlTransient
+    public Collection<Operation> getOperationCollection() {
+        return operationCollection;
+    }
+
+    public void setOperationCollection(Collection<Operation> operationCollection) {
+        this.operationCollection = operationCollection;
+    }
+
+    public Client getClientid() {
+        return clientid;
+    }
+
+    public void setClientid(Client clientid) {
+        this.clientid = clientid;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -58,38 +114,6 @@ public class Compte implements Serializable {
     @Override
     public String toString() {
         return "entities.Compte[ id=" + id + " ]";
-    }
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-        public float getSolde() {
-        return solde;
-    }
-
-    public void setSolde(float solde) {
-        this.solde = solde;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public List<Operation> getOperations() {
-        return operations;
-    }
-
-    public void setOperations(List<Operation> operations) {
-        this.operations = operations;
     }
     
 }

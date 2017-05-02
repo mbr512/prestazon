@@ -6,55 +6,158 @@
 package entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Collection;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author lemec
  */
 @Entity
+@Table(name = "produit", catalog = "prestazon", schema = "")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Produit.findAll", query = "SELECT p FROM Produit p")
+    , @NamedQuery(name = "Produit.findById", query = "SELECT p FROM Produit p WHERE p.id = :id")
+    , @NamedQuery(name = "Produit.findByLibelle", query = "SELECT p FROM Produit p WHERE p.libelle = :libelle")
+    , @NamedQuery(name = "Produit.findByDesignation", query = "SELECT p FROM Produit p WHERE p.designation = :designation")
+    , @NamedQuery(name = "Produit.findByPrixHT", query = "SELECT p FROM Produit p WHERE p.prixHT = :prixHT")
+    , @NamedQuery(name = "Produit.findByTaxe", query = "SELECT p FROM Produit p WHERE p.taxe = :taxe")
+    , @NamedQuery(name = "Produit.findByQuantiteTheorique", query = "SELECT p FROM Produit p WHERE p.quantiteTheorique = :quantiteTheorique")
+    , @NamedQuery(name = "Produit.findByQuantiteRelle", query = "SELECT p FROM Produit p WHERE p.quantiteRelle = :quantiteRelle")
+    , @NamedQuery(name = "Produit.findByVisible", query = "SELECT p FROM Produit p WHERE p.visible = :visible")})
 public class Produit implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-   
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 45)
+    @Column(name = "libelle")
     private String libelle;
+    @Size(max = 45)
+    @Column(name = "designation")
     private String designation;
-    private double prixHT;
-    private double taxe;
-    private int quantiteTheorique;
-    private int quantiteReelle;
-    private boolean visible;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "prixHT")
+    private BigDecimal prixHT;
+    @Column(name = "taxe")
+    private BigDecimal taxe;
+    @Column(name = "quantiteTheorique")
+    private Integer quantiteTheorique;
+    @Column(name = "quantiteRelle")
+    private Integer quantiteRelle;
+    @Column(name = "visible")
+    private Short visible;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produitid")
+    private Collection<Passercommande> passercommandeCollection;
 
-    public int getQuantiteTheorique() {
-        return quantiteTheorique;
+    public Produit() {
     }
 
-    public void setQuantiteTheorique(int quantiteTheorique) {
-        this.quantiteTheorique = quantiteTheorique;
+    public Produit(Integer id) {
+        this.id = id;
     }
 
-    public int getQuantiteReelle() {
-        return quantiteReelle;
-    }
-
-    public void setQuantiteReelle(int quantiteReelle) {
-        this.quantiteReelle = quantiteReelle;
-    }
-    
-    
-    
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public BigDecimal getPrixHT() {
+        return prixHT;
+    }
+
+    public void setPrixHT(BigDecimal prixHT) {
+        this.prixHT = prixHT;
+    }
+
+    public BigDecimal getTaxe() {
+        return taxe;
+    }
+
+    public void setTaxe(BigDecimal taxe) {
+        this.taxe = taxe;
+    }
+
+    public Integer getQuantiteTheorique() {
+        return quantiteTheorique;
+    }
+
+    public void setQuantiteTheorique(Integer quantiteTheorique) {
+        this.quantiteTheorique = quantiteTheorique;
+    }
+
+    public Integer getQuantiteRelle() {
+        return quantiteRelle;
+    }
+
+    public void setQuantiteRelle(Integer quantiteRelle) {
+        this.quantiteRelle = quantiteRelle;
+    }
+
+    public Short getVisible() {
+        return visible;
+    }
+    public boolean isVisible(){
+        if (visible==1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public void setVisible(Short visible) {
+        this.visible = visible;
+    }
+ public void setVisible(boolean visible) {
+     if (visible){
+             this.visible=1;
+             }else{
+         this.visible=0;
+     }
+ }
+    @XmlTransient
+    public Collection<Passercommande> getPassercommandeCollection() {
+        return passercommandeCollection;
+    }
+
+    public void setPassercommandeCollection(Collection<Passercommande> passercommandeCollection) {
+        this.passercommandeCollection = passercommandeCollection;
     }
 
     @Override
@@ -77,51 +180,6 @@ public class Produit implements Serializable {
         return true;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public String getDesignation() {
-        return designation;
-    }
-
-    public double getPrixHT() {
-        return prixHT;
-    }
-
-    public double getTaxe() {
-        return taxe;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public void setDesignation(String designation) {
-        this.designation = designation;
-    }
-
-    public void setPrixHT(double prixHT) {
-        this.prixHT = prixHT;
-    }
-
-    public void setTaxe(double taxe) {
-        this.taxe = taxe;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
-    
     @Override
     public String toString() {
         return "entities.Produit[ id=" + id + " ]";

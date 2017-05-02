@@ -6,58 +6,77 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author tebibou
+ * @author lemec
  */
 @Entity
+@Table(name = "commande", catalog = "prestazon", schema = "")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Commande.findAll", query = "SELECT c FROM Commande c")
+    , @NamedQuery(name = "Commande.findById", query = "SELECT c FROM Commande c WHERE c.commandePK.id = :id")
+    , @NamedQuery(name = "Commande.findByDateLiv", query = "SELECT c FROM Commande c WHERE c.dateLiv = :dateLiv")
+    , @NamedQuery(name = "Commande.findByDateFact", query = "SELECT c FROM Commande c WHERE c.dateFact = :dateFact")
+    , @NamedQuery(name = "Commande.findByEtat", query = "SELECT c FROM Commande c WHERE c.etat = :etat")
+    , @NamedQuery(name = "Commande.findByClientid", query = "SELECT c FROM Commande c WHERE c.commandePK.clientid = :clientid")})
 public class Commande implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-   private  Date dateLiv;
+    @EmbeddedId
+    protected CommandePK commandePK;
+    @Column(name = "dateLiv")
+    @Temporal(TemporalType.DATE)
+    private Date dateLiv;
+    @Column(name = "dateFact")
+    @Temporal(TemporalType.DATE)
     private Date dateFact;
+    @Size(max = 45)
+    @Column(name = "etat")
     private String etat;
-    
-    @ManyToOne
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "commande")
+    private Collection<Passercommande> passercommandeCollection;
+    @JoinColumn(name = "Client_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
     private Client client;
-    
 
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public Commande() {
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Commande)) {
-            return false;
-        }
-        Commande other = (Commande) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public Commande(CommandePK commandePK) {
+        this.commandePK = commandePK;
     }
 
-    @Override
-    public String toString() {
-        return "entities.Commande[ id=" + id + " ]";
+    public Commande(int id, int clientid) {
+        this.commandePK = new CommandePK(id, clientid);
     }
-    
+
+    public CommandePK getCommandePK() {
+        return commandePK;
+    }
+
+    public void setCommandePK(CommandePK commandePK) {
+        this.commandePK = commandePK;
+    }
+
     public Date getDateLiv() {
         return dateLiv;
     }
@@ -82,6 +101,15 @@ public class Commande implements Serializable {
         this.etat = etat;
     }
 
+    @XmlTransient
+    public Collection<Passercommande> getPassercommandeCollection() {
+        return passercommandeCollection;
+    }
+
+    public void setPassercommandeCollection(Collection<Passercommande> passercommandeCollection) {
+        this.passercommandeCollection = passercommandeCollection;
+    }
+
     public Client getClient() {
         return client;
     }
@@ -89,14 +117,30 @@ public class Commande implements Serializable {
     public void setClient(Client client) {
         this.client = client;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (commandePK != null ? commandePK.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Commande)) {
+            return false;
+        }
+        Commande other = (Commande) object;
+        if ((this.commandePK == null && other.commandePK != null) || (this.commandePK != null && !this.commandePK.equals(other.commandePK))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "entities.Commande[ commandePK=" + commandePK + " ]";
+    }
     
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 }

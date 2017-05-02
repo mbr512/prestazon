@@ -5,7 +5,7 @@
  */
 package controllers;
 
-import entities.PasserCommande;
+import entities.Passercommande;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,17 +16,17 @@ import javax.ejb.Local;
 @Local
 public interface PasserCommandeFacadeLocal {
 
-    void create(PasserCommande passerCommande);
+    void create(Passercommande passerCommande);
 
-    void edit(PasserCommande passerCommande);
+    void edit(Passercommande passerCommande);
 
-    void remove(PasserCommande passerCommande);
+    void remove(Passercommande passerCommande);
 
-    PasserCommande find(Object id);
+    Passercommande find(Object id);
 
-    List<PasserCommande> findAll();
+    List<Passercommande> findAll();
 
-    List<PasserCommande> findRange(int[] range);
+    List<Passercommande> findRange(int[] range);
 
     int count();
     

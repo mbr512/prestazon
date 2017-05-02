@@ -6,51 +6,78 @@
 package entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Patrice Torguet
+ * @author lemec
  */
 @Entity
+@Table(name = "operation", catalog = "prestazon", schema = "")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Operation.findAll", query = "SELECT o FROM Operation o")
+    , @NamedQuery(name = "Operation.findById", query = "SELECT o FROM Operation o WHERE o.id = :id")
+    , @NamedQuery(name = "Operation.findBySomme", query = "SELECT o FROM Operation o WHERE o.somme = :somme")
+    , @NamedQuery(name = "Operation.findByType", query = "SELECT o FROM Operation o WHERE o.type = :type")
+    , @NamedQuery(name = "Operation.findByDate", query = "SELECT o FROM Operation o WHERE o.date = :date")})
 public class Operation implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
-    @ManyToOne
-    private Compte compte;
-    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "somme")
+    private BigDecimal somme;
+    @Size(max = 45)
+    @Column(name = "type")
     private String type;
-    
-    private float somme;
-    
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date")
+    @Temporal(TemporalType.DATE)
     private Date date;
-    
-    public Long getId() {
-        return id;
+    @JoinColumn(name = "Compte_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Compte compteid;
+
+    public Operation() {
     }
 
-    public void setId(Long id) {
+    public Operation(Integer id) {
         this.id = id;
     }
 
-    public Compte getCompte() {
-        return compte;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCompte(Compte compte) {
-        this.compte = compte;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public BigDecimal getSomme() {
+        return somme;
+    }
+
+    public void setSomme(BigDecimal somme) {
+        this.somme = somme;
     }
 
     public String getType() {
@@ -61,14 +88,6 @@ public class Operation implements Serializable {
         this.type = type;
     }
 
-    public float getSomme() {
-        return somme;
-    }
-
-    public void setSomme(float somme) {
-        this.somme = somme;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -77,6 +96,13 @@ public class Operation implements Serializable {
         this.date = date;
     }
 
+    public Compte getCompteid() {
+        return compteid;
+    }
+
+    public void setCompteid(Compte compteid) {
+        this.compteid = compteid;
+    }
 
     @Override
     public int hashCode() {
@@ -87,13 +113,12 @@ public class Operation implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Operation)) {
             return false;
         }
         Operation other = (Operation) object;
-        if ((this.id == null && other.id != null) || 
-                (this.id != null && !this.id.equals(other.id))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -101,10 +126,7 @@ public class Operation implements Serializable {
 
     @Override
     public String toString() {
-        return "Operation{" + "id=" + id + ", compte=" + compte.getId() +
-                ", type=" + type + ", somme=" + somme + ", date=" + date + '}';
+        return "entities.Operation[ id=" + id + " ]";
     }
-
-
     
 }

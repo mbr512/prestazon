@@ -58,6 +58,22 @@ public class GestionStocks implements GestionStocksLocal {
     }
     }
 
+    @Override
+    public void decrementerStock(Produit p, int qte) {
+       if ((qte>0) && (qte>p.getQuantiteRelle())){
+        p.setQuantiteRelle(p.getQuantiteRelle() - qte);
+        produitFacade.edit(p);
+    }
+    }
+
+    @Override
+    public void decrementerStockTemp(Produit p, int qte) {
+        if ((qte>0) && (qte>p.getQuantiteTheorique())){
+        p.setQuantiteTheorique(p.getQuantiteTheorique() - qte);
+        produitFacade.edit(p);
+    }
+    }
+
 
 
    

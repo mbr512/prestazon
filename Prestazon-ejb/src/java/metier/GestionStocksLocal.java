@@ -19,5 +19,6 @@ public interface GestionStocksLocal {
     
     public List<Produit> verifierStock(HashMap<Long,Integer> listeProduitsQuantites);
     public void incrementerStock(HashMap<Produit,Integer> listeProduitsQuantites);
-    
+    public void decrementerStock(Produit p,int qte);
+    public void decrementerStockTemp(Produit p, int qte);
 }

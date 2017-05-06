@@ -32,6 +32,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Passercommande.findByQte", query = "SELECT p FROM Passercommande p WHERE p.qte = :qte")})
 public class Passercommande implements Serializable {
 
+    @JoinColumn(name = "Commande_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Commande commandeid;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -111,6 +115,14 @@ public class Passercommande implements Serializable {
     @Override
     public String toString() {
         return "entities.Passercommande[ id=" + id + " ]";
+    }
+
+    public Commande getCommandeid() {
+        return commandeid;
+    }
+
+    public void setCommandeid(Commande commandeid) {
+        this.commandeid = commandeid;
     }
     
 }

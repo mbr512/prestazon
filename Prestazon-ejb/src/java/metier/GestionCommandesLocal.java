@@ -21,4 +21,5 @@ public interface GestionCommandesLocal {
     public HashMap<Long,Commande> ListeCommandes(String login);
     public String getEtatCommande(long IdCommande);
     public float getMontantTotal (Long IdCommande);
+    public Commande find(long IdCommande);
 }

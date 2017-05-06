@@ -8,10 +8,12 @@ package entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -20,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -39,6 +42,12 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Commande.findByEtat", query = "SELECT c FROM Commande c WHERE c.etat = :etat")
     , @NamedQuery(name = "Commande.findByClientid", query = "SELECT c FROM Commande c WHERE c.commandePK.clientid = :clientid")})
 public class Commande implements Serializable {
+
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -118,10 +127,26 @@ public class Commande implements Serializable {
         this.client = client;
     }
 
+
+
+
+
+    public Commande(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (commandePK != null ? commandePK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -132,7 +157,7 @@ public class Commande implements Serializable {
             return false;
         }
         Commande other = (Commande) object;
-        if ((this.commandePK == null && other.commandePK != null) || (this.commandePK != null && !this.commandePK.equals(other.commandePK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -140,7 +165,7 @@ public class Commande implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Commande[ commandePK=" + commandePK + " ]";
+        return "entities.Commande[ id=" + id + " ]";
     }
     
 }

@@ -8,6 +8,7 @@ package metier;
 import controllers.ClientFacadeLocal;
 import entities.Client;
 import exception.ClientExistantException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -32,6 +33,20 @@ public class GestionClients implements GestionClientsLocal {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Client find(long id) {
+      Client c = null;
+     List<Client> listeClients = clientFacade.findAll();
+     int i=0;
+     while ((i<listeClients.size()) && (c == null)){
+         if ((listeClients.get(i).getId() == id)){
+             c=listeClients.get(i);
+         };
+         i++;
+     };
+     return c;
     }
 
  }

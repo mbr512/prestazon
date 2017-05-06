@@ -18,6 +18,6 @@ public interface GestionClientsLocal {
     
     //vérifie l'adéquation login et mdp
     public boolean verificationLoginMdp(String nomUtilisateur, String motDePassse);
-    
+    public Client find(long id);
     
 }

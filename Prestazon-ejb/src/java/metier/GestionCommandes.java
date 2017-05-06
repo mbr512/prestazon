@@ -12,10 +12,12 @@ import controllers.PasserCommandeFacadeLocal;
 import entities.Commande;
 import entities.Passercommande;
 import entities.Produit;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -40,9 +42,29 @@ public class GestionCommandes implements GestionCommandesLocal {
     
     @EJB
     private GestionProduitsLocal gestionProduitsFacade;
+    
+    @EJB
+    private GestionClients gestionClientsFacade;
 
     @Override
     public void creerCommande(long IdCommande, HashMap<Long, Long> listeProduits, long IdClient, long Nocompte) {
+        //Création commande
+        Commande c = new Commande();
+        c.setClient(gestionClientsFacade.find(IdClient));
+        List<Produit> listeTousLesProduits = gestionProduitsFacade.afficherTousLesProduits();
+        ArrayList<Passercommande> ListeQuantites = new ArrayList<Passercommande>();
+        Passercommande pc;
+        for (Produit p : listeTousLesProduits){
+            if (listeProduits.containsKey(p.getId().longValue())){
+             pc=new Passercommande();
+             pc.setCommande(c);
+             pc.setQte(listeProduits.get(p.getId().longValue()).intValue());
+             pc.setProduitid(p);
+             ListeQuantites.add(pc);
+            }
+        c.setPassercommandeCollection(ListeQuantites);
+        }        
+        commandeFacade.create(c);
         
     }
 
